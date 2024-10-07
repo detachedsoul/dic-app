@@ -1,9 +1,11 @@
 "use client";
 
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
 const Index = () => {
+    const { push } = useRouter();
+
     const [word, setWord] = useState("");
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -29,22 +31,14 @@ const Index = () => {
 				/>
 			</label>
 
-			{word === "" ? (
-				<button
-					className="text-white rounded py-3 cursor-not-allowed bg-red-500/50 px-4 font-semibold"
-					type="button"
-					disabled
-				>
-					Search
-				</button>
-			) : (
-				<Link
-					className="bg-blue-500 text-white rounded py-3 hover:bg-blue-500/70 px-4 font-semibold text-center"
-					href={`/word/${word.toLowerCase()}`}
-				>
-					Search
-				</Link>
-			)}
+			<button
+                className={`text-white rounded py-3 px-4 font-semibold ${word === "" ? "cursor-not-allowed bg-red-500/50" : "bg-blue-500"}`}
+                type="button"
+                onClick={() => push(`/word/${word.toLowerCase()}`)}
+                disabled={word === ""}
+            >
+                Search
+            </button>
 		</div>
 	);
 };

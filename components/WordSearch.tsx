@@ -284,3 +284,5 @@ const WordSearch = ({ word }: { word: string }) => {
 };
 
 export default WordSearch;
+
+export const dynamic = "force-dynamic"

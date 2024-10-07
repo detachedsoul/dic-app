@@ -5,3 +5,5 @@ const Word = ({params}: {params: {word: string}}) => {
 };
 
 export default Word;
+
+export const dynamic = "force-dynamic"
