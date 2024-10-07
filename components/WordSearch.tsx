@@ -58,7 +58,7 @@ const WordSearch = ({ word }: { word: string }) => {
 	// Check if the fetch is still in progress or if page is loading
 	if (isLoading || result.isLoading) {
 		return (
-			<div className="grid place-content-center h-screen text-2xl text-center font-semibold animate-pulse">
+			<div className="grid place-content-center -translate-y-[15%] h-screen lg:translate-y-0 text-2xl text-center font-semibold animate-pulse">
 				Fetching details of the word{" "}
 				<span className="text-3xl">{word}</span>
 			</div>
@@ -68,7 +68,7 @@ const WordSearch = ({ word }: { word: string }) => {
 	// Show warning before redirecting unauthenticated users
 	if (!isLoading && !result.isLoading && !isAuthenticated) {
 		return (
-			<div className="grid place-content-center gap-4 px-4 h-screen text-2xl text-red-500 font-semibold">
+			<div className="grid place-content-center gap-4 px-4 -translate-y-[15%] h-screen lg:translate-y-0 text-2xl text-red-500 font-semibold">
 				You need to login to continue. You would be redirected to the
 				login page in 3 seconds...
 			</div>
@@ -104,16 +104,16 @@ const WordSearch = ({ word }: { word: string }) => {
 						}`}
 						key={index}
 					>
-						<div className="space-y-2 bg-gray-200 p-2">
+						<div className="space-y-2 bg-gray-200 break-words [word-break:break-word] [word-wrap:break-word] p-2">
 							<h2 className="text-lg">License:</h2>
 
 							<div className="space-y-2">
-								<div className="flex items-center gap-4">
-									<span className="font-semibold whitespace-nowrap">
+								<div className="flex items-center flex-wrap gap-4">
+									<span className="font-semibold">
 										Name:
 									</span>
 
-									<span className="font-medium">
+									<span className="font-medium ">
 										{word.license.name}
 									</span>
 								</div>
@@ -125,8 +125,8 @@ const WordSearch = ({ word }: { word: string }) => {
 								<h2 className="text-lg">Phonetic:</h2>
 
 								<div className="space-y-2">
-									<div className="flex items-center gap-4">
-										<span className="font-semibold whitespace-nowrap">
+									<div className="flex items-center flex-wrap gap-4">
+										<span className="font-semibold">
 											Phonetic:
 										</span>
 
@@ -159,7 +159,7 @@ const WordSearch = ({ word }: { word: string }) => {
 															{details?.license
 																?.name && (
 																<div className="flex items-center flex-wrap gap-4">
-																	<span className="font-semibold whitespace-nowrap">
+																	<span className="font-semibold">
 																		Name:
 																	</span>
 
@@ -175,8 +175,8 @@ const WordSearch = ({ word }: { word: string }) => {
 
 															{details?.license
 																?.url && (
-																<div className="flex items-center gap-4">
-																	<span className="font-semibold whitespace-nowrap">
+																<div className="flex items-center flex-wrap gap-4">
+																	<span className="font-semibold">
 																		URL:
 																	</span>
 
@@ -196,8 +196,8 @@ const WordSearch = ({ word }: { word: string }) => {
 
 										{details.sourceUrl && (
 											<div className="space-y-2">
-												<div className="flex items-center gap-4">
-													<span className="font-semibold whitespace-nowrap">
+												<div className="flex items-center flex-wrap gap-4">
+													<span className="font-semibold">
 														Source URL:
 													</span>
 
@@ -211,7 +211,7 @@ const WordSearch = ({ word }: { word: string }) => {
 										{details.audio && (
 											<div className="space-y-2">
 												<div className="flex items-center gap-4">
-													<span className="font-semibold whitespace-nowrap">
+													<span className="font-semibold">
 														Audio:
 													</span>
 
@@ -236,7 +236,7 @@ const WordSearch = ({ word }: { word: string }) => {
 									<>
 										<div className="space-y-2">
 											<div className="flex items-center gap-4">
-												<span className="font-semibold whitespace-nowrap">
+												<span className="font-semibold">
 													Part of Speech:
 												</span>
 
@@ -257,7 +257,7 @@ const WordSearch = ({ word }: { word: string }) => {
 													>
 														<div className="space-y-2">
 															<div className="flex items-center flex-wrap gap-4">
-																<span className="font-semibold whitespace-nowrap">
+																<span className="font-semibold">
 																	Definition:
 																</span>
 

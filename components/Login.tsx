@@ -68,7 +68,7 @@ const Login = () => {
 
 	return (
 		<form
-			className="grid place-content-center gap-4 px-4 h-screen"
+			className="grid place-content-center gap-4 px-4 -translate-y-[10%] h-screen lg:translate-y-0"
 			onSubmit={login}
 		>
 			<h1 className="text-2xl text-center mb-4 font-semibold">

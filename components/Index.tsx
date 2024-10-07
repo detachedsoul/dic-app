@@ -13,7 +13,7 @@ const Index = () => {
     };
 
     return (
-		<div className="grid place-content-center gap-4 px-4 h-screen">
+		<div className="grid place-content-center gap-4 px-4 -translate-y-[15%] h-screen lg:translate-y-0">
 			<h1 className="text-2xl text-center mb-4 font-semibold">
 				Enter any word
 			</h1>
