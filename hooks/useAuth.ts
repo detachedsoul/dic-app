@@ -14,7 +14,7 @@ const useAuth = () => {
 
             if (!getUserDetails) {
                 setIsAuthenticated(false);
-				setUserDetails(userDetails);
+				setUserDetails((details) => details);
             } else {
 				setIsAuthenticated(true);
 				setUserDetails(JSON.parse(getUserDetails));
@@ -22,7 +22,7 @@ const useAuth = () => {
 
             setIsLoading(false);
         }
-    }, [userDetails]);
+    }, []);
 
     return {
 		isLoading,

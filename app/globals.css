@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    span {
+        @apply break-words [word-break:break-word] [word-wrap:break-word]
+    }
+}

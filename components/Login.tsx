@@ -48,8 +48,6 @@ const Login = () => {
         try {
             localStorage.setItem("user-details", JSON.stringify(userDetails));
 
-            setIsLoading(false);
-
             replace("/");
         } catch (error: unknown) {
             console.error("An error occured", error);
@@ -98,8 +96,10 @@ const Login = () => {
 			</label>
 
 			<button
-				className={`bg-blue-500 text-white rounded py-3 hover:bg-blue-500/70 px-4 font-semibold ${
-					isButtonDisabled ? "cursor-not-allowed bg-red-500/50" : ""
+				className={`text-white rounded py-3 px-4 font-semibold ${
+					isButtonDisabled
+						? "cursor-not-allowed bg-red-500/50 pointer-events-none"
+						: "bg-blue-500 hover:bg-blue-500/70"
 				}`}
 				type="submit"
 				disabled={isButtonDisabled || isLoading}

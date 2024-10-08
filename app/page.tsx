@@ -9,7 +9,7 @@ export default function Home() {
 
     if (isLoading) {
         return (
-			<div className="grid place-content-center -translate-y-[15%] h-screen lg:translate-y-0 text-2xl text-center font-semibold animate-pulse">
+			<div className="grid place-content-center -translate-y-[10%] h-screen lg:translate-y-0 text-2xl text-center font-semibold animate-pulse">
 				Loading...
 			</div>
 		);

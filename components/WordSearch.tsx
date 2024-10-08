@@ -4,61 +4,35 @@
 import Header from "@/components/Header";
 import useAuth from "@/hooks/useAuth";
 import { notFound, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-const WordSearch = ({ word }: { word: string }) => {
+const WordSearch = ({
+	data,
+	fetchIsLoading,
+	word,
+	error,
+}: {
+	data: any;
+	fetchIsLoading: boolean;
+	word: string;
+	error: boolean;
+}) => {
 	const { isLoading, isAuthenticated } = useAuth();
 
 	const { replace } = useRouter();
 
-	const [result, setResult] = useState<{ isLoading: boolean; data: any }>({
-		isLoading: true,
-		data: null,
-	});
-
 	useEffect(() => {
-		const fetchWord = async () => {
-			try {
-				const req = await fetch(
-					`https://api.dictionaryapi.dev/api/v2/entries/en/${word.toLowerCase()}`,
-				);
-
-				const res = await req.json();
-
-				if (req.status === 404) {
-					setResult({
-						isLoading: false,
-						data: null,
-					});
-				} else {
-					setResult({
-						isLoading: false,
-						data: res,
-					});
-				}
-			} catch (error: any) {
-				setResult({
-					isLoading: false,
-					data: error.message,
-				});
-			}
-		};
-
-		fetchWord();
-	}, [word]);
-
-	useEffect(() => {
-		if (!isLoading && !result.isLoading && !isAuthenticated) {
+		if (!isLoading && !fetchIsLoading && !isAuthenticated) {
 			setTimeout(() => {
 				replace("/login");
 			}, 3000);
 		}
-	}, [isLoading, result.isLoading, isAuthenticated, replace]);
+	}, [isLoading, fetchIsLoading, isAuthenticated, replace]);
 
 	// Check if the fetch is still in progress or if page is loading
-	if (isLoading || result.isLoading) {
+	if (isLoading || fetchIsLoading) {
 		return (
-			<div className="grid place-content-center -translate-y-[15%] h-screen lg:translate-y-0 text-2xl text-center font-semibold animate-pulse">
+			<div className="grid place-content-center -translate-y-[10%] h-screen lg:translate-y-0 text-2xl text-center font-semibold animate-pulse">
 				Fetching details of the word{" "}
 				<span className="text-3xl">{word}</span>
 			</div>
@@ -66,9 +40,9 @@ const WordSearch = ({ word }: { word: string }) => {
 	}
 
 	// Show warning before redirecting unauthenticated users
-	if (!isLoading && !result.isLoading && !isAuthenticated) {
+	if (!isLoading && !fetchIsLoading && !isAuthenticated) {
 		return (
-			<div className="grid place-content-center gap-4 px-4 -translate-y-[15%] h-screen lg:translate-y-0 text-2xl text-red-500 font-semibold">
+			<div className="grid place-content-center gap-4 px-4 -translate-y-[10%] h-screen lg:translate-y-0 text-2xl text-red-500 font-semibold">
 				You need to login to continue. You would be redirected to the
 				login page in 3 seconds...
 			</div>
@@ -76,7 +50,7 @@ const WordSearch = ({ word }: { word: string }) => {
 	}
 
 	// Show 404 page if no result was found
-	if (!result.data) {
+	if (error && !isLoading && !fetchIsLoading) {
 		notFound();
 	}
 
@@ -86,34 +60,30 @@ const WordSearch = ({ word }: { word: string }) => {
 
 			<div
 				className={`flex flex-col gap-4 place-content-center min-h-screen my-8 px-4 lg:grid lg:items-start lg:px-[10%] ${
-					result?.data?.length > 1
-						? "lg:grid-cols-2"
-						: "lg:grid-cols-1"
+					data?.length > 1 ? "lg:grid-cols-2" : "lg:grid-cols-1"
 				}`}
 			>
 				<h2 className="text-3xl font-semibold lg:col-span-2">
 					Word: {word}
 				</h2>
 
-				{result?.data?.map((word: any, index: number) => (
+				{data?.map((word: any) => (
 					<div
-						className={`grid gap-4 bg-gray-300 p-4 ${
-							result?.data?.length > 1
+						className={`grid gap-4 bg-gray-300 items-start p-4 ${
+							data?.length > 1
 								? "lg:grid-cols-1"
 								: "lg:grid-cols-2"
 						}`}
-						key={index}
+						key={crypto.randomUUID()}
 					>
-						<div className="space-y-2 bg-gray-200 break-words [word-break:break-word] [word-wrap:break-word] p-2">
+						<div className="space-y-2 bg-gray-200 p-2">
 							<h2 className="text-lg">License:</h2>
 
 							<div className="space-y-2">
 								<div className="flex items-center flex-wrap gap-4">
-									<span className="font-semibold">
-										Name:
-									</span>
+									<span className="font-semibold">Name:</span>
 
-									<span className="font-medium ">
+									<span className="font-medium">
 										{word.license.name}
 									</span>
 								</div>
@@ -142,89 +112,95 @@ const WordSearch = ({ word }: { word: string }) => {
 							<div className="space-y-3 bg-gray-200 p-2">
 								<h2 className="text-lg">Phonetics:</h2>
 
-								{word.phonetics.map((details: any) => (
-									<>
-										{details?.license?.name &&
-											details?.license?.url && (
-												<div
-													className="space-y-2 border-b border-slate-500 pb-4 last:border-transparent last:pb-0"
-													key={details.license.name}
-												>
-													<div className="space-y-2">
-														<h3 className="font-semobold">
-															License:
-														</h3>
-
+								{word.phonetics.map(
+									(details: any, index: number) => (
+										<>
+											{details?.license?.name &&
+												details?.license?.url && (
+													<div
+														className="space-y-2 border-b border-slate-500 pb-4 last:border-transparent last:pb-0"
+														key={index}
+													>
 														<div className="space-y-2">
-															{details?.license
-																?.name && (
-																<div className="flex items-center flex-wrap gap-4">
-																	<span className="font-semibold">
-																		Name:
-																	</span>
+															<h3 className="font-semobold">
+																License:
+															</h3>
 
-																	<span className="font-medium">
-																		{
-																			details
-																				.license
-																				.name
-																		}
-																	</span>
-																</div>
-															)}
+															<div className="space-y-2">
+																{details
+																	?.license
+																	?.name && (
+																	<div className="flex items-center flex-wrap gap-4">
+																		<span className="font-semibold">
+																			Name:
+																		</span>
 
-															{details?.license
-																?.url && (
-																<div className="flex items-center flex-wrap gap-4">
-																	<span className="font-semibold">
-																		URL:
-																	</span>
+																		<span className="font-medium">
+																			{
+																				details
+																					.license
+																					.name
+																			}
+																		</span>
+																	</div>
+																)}
 
-																	<span className="font-medium">
-																		{
-																			details
-																				.license
-																				?.url
-																		}
-																	</span>
-																</div>
-															)}
+																{details
+																	?.license
+																	?.url && (
+																	<div className="flex items-center flex-wrap gap-4">
+																		<span className="font-semibold">
+																			URL:
+																		</span>
+
+																		<span className="font-medium">
+																			{
+																				details
+																					.license
+																					?.url
+																			}
+																		</span>
+																	</div>
+																)}
+															</div>
 														</div>
+													</div>
+												)}
+
+											{details.sourceUrl !== "" && (
+												<div className="space-y-2">
+													<div className="flex items-center flex-wrap gap-4">
+														<span className="font-semibold">
+															Source URL:
+														</span>
+
+														<span className="font-medium">
+															{details.sourceUrl}
+														</span>
 													</div>
 												</div>
 											)}
 
-										{details.sourceUrl && (
-											<div className="space-y-2">
-												<div className="flex items-center flex-wrap gap-4">
-													<span className="font-semibold">
-														Source URL:
-													</span>
+											{details.audio !== "" && (
+												<div className="space-y-2">
+													<div className="flex items-center flex-wrap gap-4">
+														<span className="font-semibold">
+															Audio:
+														</span>
 
-													<span className="font-medium">
-														{details.sourceUrl}
-													</span>
+														<audio controls>
+															<source
+																src={
+																	details.audio
+																}
+															/>
+														</audio>
+													</div>
 												</div>
-											</div>
-										)}
-
-										{details.audio && (
-											<div className="space-y-2">
-												<div className="flex items-center gap-4">
-													<span className="font-semibold">
-														Audio:
-													</span>
-
-													<audio controls>
-														<source
-															src={details.audio}
-														/>
-													</audio>
-												</div>
-											</div>
-										)}
-									</>
-								))}
+											)}
+										</>
+									),
+								)}
 							</div>
 						)}
 
@@ -285,4 +261,4 @@ const WordSearch = ({ word }: { word: string }) => {
 
 export default WordSearch;
 
-export const dynamic = "force-dynamic"
+export const dynamic = "force-dynamic";
